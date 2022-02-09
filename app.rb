@@ -6,7 +6,9 @@ require 'dotenv/load'
 require 'sqlite3'
 
 def get_db
-  return SQLite3::Database.new 'barber_shop.db'  #создать новое подключение к barber_shop.db
+  db = SQLite3::Database.new 'barber_shop.db'  #создать новое подключение к barber_shop.db
+  db.results_as_hash = true
+  return db
 end
 
 configure do # используется при инициализации приложения(и когда код изменен)
@@ -37,6 +39,10 @@ end
 
 get '/contacts' do
 	erb :contacts
+end
+
+get '/showusers' do
+  erb :showusers
 end
 
 post '/visit' do
