@@ -3,6 +3,21 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'pony'
 require 'dotenv/load'
+require 'sqlite3'
+
+configure do
+  @db = SQLite3::Database.new 'barber_shop.db' #создать новое подключение к barber_shop.db
+  @db.execute 'CREATE TABLE IF NOT EXISTS
+   "Users" 
+   (
+     "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
+     "Name" TEXT,
+     "Phone" TEXT,
+     "DateStamp" TEXT,
+     "Barber" TEXT,
+     "Color" TEXT
+   )'
+end
 
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
