@@ -5,9 +5,13 @@ require 'pony'
 require 'dotenv/load'
 require 'sqlite3'
 
-configure do
-  @db = SQLite3::Database.new 'barber_shop.db' #создать новое подключение к barber_shop.db
-  @db.execute 'CREATE TABLE IF NOT EXISTS
+def get_db
+  return SQLite3::Database.new 'barber_shop.db'  #создать новое подключение к barber_shop.db
+end
+
+configure do # используется при инициализации приложения(и когда код изменен)
+  db = get_db
+  db.execute 'CREATE TABLE IF NOT EXISTS
    "Users" 
    (
      "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,9 +57,13 @@ hh_visit = {
 
 if @error != ''
 	return erb :visit
-end
+end # единственный момент что такую штуку придется писать на каждый url
 
-# единственный момент что такую штуку придется писать на каждый url
+db = get_db
+db.execute 'insert into 
+Users (Name, Phone, DateStamp, Barber, Color) 
+values (?,?,?,?,?)', [@username, @phone, @datetime, @barber, @color]
+#сохранение данных в базу
 
 erb "OK, username is #{@username}, #{@phone}, #{@datetime}, #{@barber}, #{@color}"
 
@@ -83,7 +91,7 @@ post '/contacts' do
   @title = 'Thank you!'
   @message = "We would be glad to read your message"
 
-  # f = File.open('./public/message.txt', 'a') # запись в файл
+  # f = File.open('./public/message.txt', 'a') # это запись в файл
   # f.write "\nMessage: #{@story}, e-mail: #{@email}"
   # f.close
 
@@ -108,7 +116,6 @@ post '/contacts' do
   erb :message
 end
 
-
 post '/admin' do
   @login = params[:login]
   @password = params[:password]
@@ -121,5 +128,7 @@ post '/admin' do
     @message = 'Go away, muggle!'
   end
 end
+
+
 
 
