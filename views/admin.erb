@@ -1,0 +1,27 @@
+<h1> Hi, admin! </h1>
+<p> You typed: <%= @login %></p>
+<p> Your password: <%= @password %></p>
+
+<p><%= @message %></p>
+
+<form action="/admin" method="POST">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Login</label>
+    <input name="login" type="text" class="form-control" id="exampleInputEmail1" placeholder="login">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="password">
+  </div>
+  <button name="go" type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<div>
+<% if @logfile %>
+  <h2> Your customers: </h2>
+  <% @logfile.each_line do |line| %> 
+    <%= line %><br>
+  <% end %>
+<% end %> 
+</div>
+

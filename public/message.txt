@@ -1,0 +1,4 @@
+
+Message: aa, e-mail: aa@ww
+Message: aa, e-mail: aa@aa
+Message: Хочу чтобы получилось, e-mail: aaa@aa.cm
