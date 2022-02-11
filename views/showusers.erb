@@ -9,15 +9,15 @@
       <th>Цвет</th>
     </tr>
   </thead>
-  <body>
+  <tbody>
     <% @results.each do |row| %>
       <tr>
-        <td><%= row['Name'] %></td>
+        <td><%= row['Username'] %></td>
         <td><%= row['Phone'] %></td>
         <td><%= row['DateStamp'] %></td>
         <td><%= row['Barber'] %></td>
         <td><%= row['Color'] %></td>
       </tr>
     <% end %>
-  </body>
+  </tbody>
 </table>

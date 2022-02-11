@@ -5,6 +5,19 @@ require 'pony'
 require 'dotenv/load'
 require 'sqlite3'
 
+def is_barber_exists? db, name
+# если написать в консоли select * from Users where Usernane='Tiny' мы увидим строчку с именем Tiny
+  db.execute('select * from Barbers where name=?', [name]).length > 0 
+end
+
+def seed_db db, barbers # эта функция будет проходиться
+  barbers.each do |barber|# по каждому элементу этого (внизу) массива
+    if !is_barber_exists? db, barber # функция (сверху) проверяет существует ли барбер с таким именем и если не существует
+      db.execute 'insert into Barbers (name) values (?)', [barber] # то выполнить этот запрос (вставки барбера в нашу бд)
+    end
+  end
+end
+
 def get_db
   db = SQLite3::Database.new 'barber_shop.db'  #создать новое подключение к barber_shop.db
   db.results_as_hash = true
@@ -13,16 +26,24 @@ end
 
 configure do # используется при инициализации приложения(и когда код изменен)
   db = get_db
-  db.execute 'CREATE TABLE IF NOT EXISTS
-   "Users" 
+  db.execute 'CREATE TABLE IF NOT EXISTS "Users" 
    (
      "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
-     "Name" TEXT,
+     "Username" TEXT,
      "Phone" TEXT,
      "DateStamp" TEXT,
      "Barber" TEXT,
      "Color" TEXT
    )'
+
+  db.execute 'CREATE TABLE IF NOT EXISTS "Barbers" 
+   (
+     "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
+     "name" TEXT
+   )'
+
+   seed_db db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut'] # при обновлении страницы произойдет кофинурация и вызовется эта функция с массивом который мы задали
+
 end
 
 get '/' do
@@ -69,7 +90,7 @@ end # единственный момент что такую штуку при�
 
 db = get_db
 db.execute 'insert into 
-Users (Name, Phone, DateStamp, Barber, Color) 
+Users (Username, Phone, DateStamp, Barber, Color) 
 values (?,?,?,?,?)', [@username, @phone, @datetime, @barber, @color]
 #сохранение данных в базу
 
