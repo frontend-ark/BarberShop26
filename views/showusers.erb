@@ -1,2 +1,14 @@
-<h2>тут</h2>
-<p>что то</p>
+
+<%= @results %> 
+
+<table class="table">
+  <% @results.each do |row| %>
+    <tr>
+      <td><%= row['Name'] %></td>
+      <td><%= row['Phone'] %></td>
+      <td><%= row['DateStamp'] %></td>
+      <td><%= row['Barber'] %></td>
+      <td><%= row['Color'] %></td>
+    </tr>
+  <% end %>
+</table>
