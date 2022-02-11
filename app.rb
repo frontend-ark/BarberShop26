@@ -24,6 +24,11 @@ def get_db
   return db
 end
 
+before do # синтаксис sinatra  который исполняет код перед каждым запросом (get/post) помогает избежать дублирования кода
+  db = get_db
+  @barbers = db.execute 'select * from Barbers'
+end
+
 configure do # используется при инициализации приложения(и когда код изменен)
   db = get_db
   db.execute 'CREATE TABLE IF NOT EXISTS "Users" 
